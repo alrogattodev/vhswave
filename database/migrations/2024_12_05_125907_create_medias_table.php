@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('medias', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('genre');
-            $table->string('availability')->default('available');
+            $table->string('title', 255);
+            $table->string('genre', 50);
+            $table->string('availability', 50)->default('available');
             $table->decimal('rental_price', 8, 2);
-            $table->string('media_type');
+            $table->string('media_type', 50);
             $table->softDeletes();
             $table->timestamps();
         });
