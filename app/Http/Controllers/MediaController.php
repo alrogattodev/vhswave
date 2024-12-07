@@ -13,15 +13,7 @@ class MediaController extends Controller
      */
     public function index()
     {
-        
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json(Media::all());
     }
 
     /**
@@ -29,15 +21,28 @@ class MediaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'genre' => 'required|string|max:100',
+            'availability' => 'required|string|in:available,rented',
+            'rental_price' => 'required|numeric|min:0',
+            'media_type' => 'required|string|max:50',
+        ],
+        [
+            'rental_price.numeric' => 'O preço do aluguel deve ser um número válido (ex.: 4.99).',
+            'availability' => 'O tipo de disponibilidade deve ser Disponível ou Indisponível.'
+        ]);
+
+        $media = Media::create($validated);
+        return response()->json($media, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Media $media)
     {
-        //
+        return response()->json($media);
     }
 
     /**
