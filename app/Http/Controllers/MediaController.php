@@ -118,7 +118,7 @@ class MediaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Softly Remove the specified resource from storage.
      */
     public function destroy(string $id)
     {
@@ -181,6 +181,10 @@ class MediaController extends Controller
         }
     } 
     
+
+    /**
+     * Hard Remove the specified resource from storage.
+     */    
     public function forceDelete(string $id)
     {
         try {

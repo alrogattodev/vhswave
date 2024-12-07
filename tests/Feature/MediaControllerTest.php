@@ -1,7 +1,8 @@
 <?php
 
 namespace Tests\Feature;
-
+use App\Models\Media;
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -32,18 +33,49 @@ class MediaControllerTest extends TestCase
     public function test_store_fails_with_invalid_data()
     {
         $data = [
-            'title' => '', // Invalid title
+            'title' => '',
             'genre' => 'Sci-Fi',
-            'availability' => 'invalid_status', // Invalid availability
-            'rental_price' => -10, // Invalid rental price
+            'availability' => 'invalid_status',
+            'rental_price' => -10,
             'media_type' => '',
         ];
 
-        // Perform the POST request
         $response = $this->postJson('/api/medias', $data);
 
-        // Assert the response
         $response->assertStatus(422)
-                 ->assertJsonValidationErrors(['title', 'availability', 'rental_price', 'media_type']);
-    }    
+                 ->assertJsonValidationErrors([
+                    'title', 
+                    'availability', 
+                    'rental_price', 
+                    'media_type',
+                ]);
+    }
+
+    public function test_store_update_media_successfully() 
+    {
+        $media = Media::factory()->create();
+
+        $data = [
+            'title' => 'Click',
+            'genre' => 'Drama, Comédia',
+            'availability' => 'available',
+            'rental_price' => 4.99,
+            'media_type' => 'DVD'
+        ];
+
+        $response = $this->putJson("/api/medias/{$media->id}", $data);
+        $response->assertStatus(200)->assertJsonFragment([
+            'title' => 'Click',
+            'genre' => 'Drama, Comédia',
+            'availability' => 'available',
+            'rental_price' => 4.99,
+            'media_type' => 'DVD'
+        ]);
+
+        $this->assertDatabaseHas('medias', [
+            'id' => $media->id,
+            'title' => 'Click'
+        ]);
+
+    }
 }
