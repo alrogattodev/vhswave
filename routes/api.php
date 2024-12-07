@@ -11,3 +11,5 @@ use App\Http\Controllers\MediaController;
 
 Route::apiResource('medias', MediaController::class);
 Route::apiResource('clients', ClientController::class);
+Route::patch('medias/restore/{id}', [MediaController::class, 'restore'])->name('medias.restore');
+Route::delete('medias/force/{id}', [MediaController::class, 'forceDelete'])->name('medias.forceDelete');
