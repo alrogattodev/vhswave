@@ -14,4 +14,9 @@ class Client extends Model
         'email',
         'phone',
     ];
+
+    public function rents()
+    {
+        return $this->hasMany(Rent::class);
+    }    
 }

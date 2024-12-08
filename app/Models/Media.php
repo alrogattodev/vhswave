@@ -32,4 +32,10 @@ class Media extends Model
     {
         return self::getStatuses()[$this->availability];
     }
+
+    public function rents()
+    {
+        return $this->hasMany(Rent::class);
+    }
+    
 }
